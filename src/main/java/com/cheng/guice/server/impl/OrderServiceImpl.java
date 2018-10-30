@@ -5,6 +5,7 @@ import com.cheng.guice.server.PaymentService;
 import com.cheng.guice.server.PriceService;
 
 import javax.inject.Inject;
+import java.util.Set;
 
 /**
  * @author cheng
@@ -41,5 +42,18 @@ public class OrderServiceImpl implements OrderService {
         throw new RuntimeException("Price=" + price
                 + ". SessionId=" + sessionManager.getSessionId()
                 + ". ordersPaid=" + ordersPaid);
+    }
+}
+
+class PriceServiceMock extends PriceServiceImpl {
+
+    @Inject
+    public PriceServiceMock(Set<String> supportedCurrencies) {
+        super(supportedCurrencies);
+    }
+
+    @Override
+    public long getPrice(long orderId) {
+        return 567L;
     }
 }

@@ -1,9 +1,12 @@
-package com.cheng.guice.server;
+package com.cheng.guice.server.impl;
 
-import com.cheng.guice.server.impl.ServerModule;
+import com.cheng.guice.server.OrderService;
+import com.cheng.guice.server.PriceService;
+import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
+import com.google.inject.util.Modules;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,25 +27,19 @@ public class OrderServiceTest {
 
     @Before
     public void setUp()  {
-        Guice.createInjector(new ServerModule()/*,
-                new AbstractModule() {
+        Guice.createInjector(Modules.override(new ServerModule()).
+                with(new AbstractModule() {
                     @Override
                     protected void configure() {
-                        // 连接绑定
-                        bind(PriceServiceImpl.class).toInstance(new PriceServiceImpl() {
-                            @Override
-                            public long getPrice(long orderId) {
-                                return 567L;
-                            }
-                        });
+                        bind(PriceService.class).to(PriceServiceMock.class);
                     }
-                }*/)
+                }))
                 .injectMembers(this);
     }
 
     @Test
     public void testSendToPayment() {
-        orderService.sendToPayment(677L);
+        orderService.sendToPayment(789L);
     }
 
     @Test
