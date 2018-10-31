@@ -3,6 +3,7 @@ package com.cheng.guice.server.impl;
 import com.cheng.guice.server.OrderService;
 import com.cheng.guice.server.PaymentService;
 import com.cheng.guice.server.PriceService;
+import com.google.common.cache.Cache;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
@@ -38,6 +39,9 @@ public class ServerModule extends AbstractModule {
                 .annotatedWith(Names.named("supportedCurrencies"))
                 .toInstance(Arrays.asList("CNY", "EUR", "USD"));
 
+
+        bind(new TypeLiteral<Cache<String, String>>() {
+        }).to(GuiceDemoCache.class)/*.in(Singleton.class)*/;
     }
 
     /**
@@ -62,5 +66,16 @@ public class ServerModule extends AbstractModule {
     @Named("supportedCurrencies")
     protected List<String> getSupportedCurrencies(PriceService priceService) {
         return priceService.getSupportedCurrencies();
+    }*/
+
+    /**
+     * 作用域：Singleton
+     *
+     * @return
+     */
+    /*@Provides
+    @Singleton
+    private Cache<String, String> getCache() {
+        return new GuiceDemoCache();
     }*/
 }

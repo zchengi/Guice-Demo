@@ -1,6 +1,9 @@
 package com.cheng.guice.server.impl;
 
 import com.cheng.guice.server.PaymentService;
+import com.google.common.cache.Cache;
+
+import javax.inject.Inject;
 
 /**
  * @author cheng
@@ -8,8 +11,18 @@ import com.cheng.guice.server.PaymentService;
  */
 public class PaymentServiceImpl implements PaymentService {
 
+    private final Cache<String, String> cache;
+
+    @Inject
+    public PaymentServiceImpl(Cache<String, String> cache) {
+        this.cache = cache;
+    }
+
     @Override
     public void pay(long orderId, long price, Long sessionId) {
+    }
 
+    void putCache(String key, String value) {
+        cache.put(key, value);
     }
 }
