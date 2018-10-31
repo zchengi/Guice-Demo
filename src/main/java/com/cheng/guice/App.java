@@ -1,6 +1,7 @@
 package com.cheng.guice;
 
 import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * @author cheng
@@ -16,9 +17,11 @@ public class App {
      * @param args
      */
     public static void main(String[] args) {
-        MyApplet myApplet =
-                Guice.createInjector(new MainModule())
-                        .getInstance(MyApplet.class);
-        myApplet.run();
+
+        Injector injector = Guice.createInjector(
+                new MainModule(),
+                new CommandLineModule(args));
+
+        Applets.get(injector, args[0]).run();
     }
 }
