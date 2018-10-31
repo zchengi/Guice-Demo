@@ -1,5 +1,6 @@
 package com.cheng.guice.server.impl;
 
+import com.cheng.guice.Logged;
 import com.cheng.guice.server.OrderService;
 import com.cheng.guice.server.PaymentService;
 import com.cheng.guice.server.PriceService;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Logged
     public void sendToPayment(long orderId) {
         long price = priceService.getPrice(orderId);
         paymentService.pay(orderId, price,
@@ -41,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
 
         throw new RuntimeException("Price=" + price
                 + ". SessionId=" + sessionManager.getSessionId()
-                + ". ordersPaid=" + ordersPaid);
+                + ". OrdersPaid=" + ordersPaid);
     }
 }
 

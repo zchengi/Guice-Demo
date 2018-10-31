@@ -1,5 +1,6 @@
 package com.cheng.guice.server.impl;
 
+import com.cheng.guice.Logged;
 import com.cheng.guice.server.OrderService;
 import com.cheng.guice.server.PaymentService;
 import com.cheng.guice.server.PriceService;
@@ -7,6 +8,7 @@ import com.google.common.cache.Cache;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
+import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
 import java.util.Arrays;
@@ -42,6 +44,13 @@ public class ServerModule extends AbstractModule {
 
         bind(new TypeLiteral<Cache<String, String>>() {
         }).to(GuiceDemoCache.class)/*.in(Singleton.class)*/;
+
+
+        LoggingInterceptor loggingInterceptor = new LoggingInterceptor();
+        requestInjection(loggingInterceptor);
+        bindInterceptor(Matchers.any(),
+                Matchers.annotatedWith(Logged.class),
+                loggingInterceptor);
     }
 
     /**

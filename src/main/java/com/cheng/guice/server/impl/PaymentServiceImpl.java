@@ -1,5 +1,6 @@
 package com.cheng.guice.server.impl;
 
+import com.cheng.guice.Logged;
 import com.cheng.guice.server.PaymentService;
 import com.google.common.cache.Cache;
 
@@ -19,6 +20,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Logged
     public void pay(long orderId, long price, Long sessionId) {
     }
 

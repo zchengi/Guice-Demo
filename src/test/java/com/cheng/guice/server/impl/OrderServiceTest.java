@@ -13,6 +13,9 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 public class OrderServiceTest {
 
     @Inject
@@ -39,12 +42,20 @@ public class OrderServiceTest {
 
     @Test
     public void testSendToPayment() {
-        orderService.sendToPayment(789L);
+
+        try {
+            orderService.sendToPayment(789L);
+        } catch (RuntimeException e) {
+            assertTrue(e.getMessage().contains("Price=567"));
+            assertTrue(e.getMessage().contains("OrdersPaid=1"));
+        }
     }
 
     @Test
     public void testSupportedCurrencies() {
+
 //        throw new RuntimeException(supportedCurrenciesProvider.get().toString());
-        throw new RuntimeException(priceService.getSupportedCurrencies().toString());
+//        throw new RuntimeException(priceService.getSupportedCurrencies().toString());
+        assertEquals("[CNY, EUR, USD]", priceService.getSupportedCurrencies().toString());
     }
 }
