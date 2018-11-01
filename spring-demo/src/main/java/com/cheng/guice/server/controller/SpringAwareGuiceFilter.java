@@ -1,4 +1,4 @@
-package com.cheng.guice;
+package com.cheng.guice.server.controller;
 
 import com.google.inject.servlet.GuiceFilter;
 

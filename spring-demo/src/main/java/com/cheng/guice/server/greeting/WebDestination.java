@@ -1,4 +1,4 @@
-package com.cheng.guice;
+package com.cheng.guice.server.greeting;
 
 import com.cheng.guice.helloworlddemo.MyDestination;
 import com.google.inject.servlet.RequestScoped;
@@ -13,19 +13,16 @@ import javax.inject.Inject;
 @RequestScoped
 public class WebDestination implements MyDestination {
 
-    private final SampleDao dao;
     private final StringBuilder sb;
 
     @Inject
-    public WebDestination(SampleDao dao) {
+    public WebDestination() {
         System.out.println("WebDestination constructed.");
-        this.dao = dao;
         this.sb = new StringBuilder();
     }
 
     @Override
     public void write(String string) {
-        dao.save(string);
         sb.append(string);
     }
 

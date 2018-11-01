@@ -1,5 +1,8 @@
-package com.cheng.guice;
+package com.cheng.guice.server.controller;
 
+import com.cheng.guice.server.SpringScanBase;
+import com.cheng.guice.server.greeting.GreetingHandler;
+import com.cheng.guice.server.greeting.HelloWorldWebModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.annotation.RequestScope;
 
 @RestController
-@SpringBootApplication
+@SpringBootApplication(scanBasePackageClasses = SpringScanBase.class)
 @ServletComponentScan
 public class SampleController {
 
@@ -22,41 +25,26 @@ public class SampleController {
     Injector injector(ApplicationContext context) {
         return Guice.createInjector(
                 new HelloWorldWebModule(),
-                new SpringAwareModule(context));
+                new SpringAwareServletModule(context));
     }
 
     @Bean
     @RequestScope
-    MyApplet myApplet(Injector injector) {
-        return injector.getInstance(MyApplet.class);
-    }
-
-    @Bean
-    @RequestScope
-    WebDestination destination(Injector injector) {
-        return injector.getInstance(WebDestination.class);
-    }
-
-    @Bean
-    @RequestScope
-    RequestParams params(Injector injector) {
-        return injector.getInstance(RequestParams.class);
+    GreetingHandler greetingHandler(Injector injector) {
+        return injector.getInstance(GreetingHandler.class);
     }
 
     @Autowired
-    MyApplet applet;
+    GreetingHandler greetingHandler;
 
-    @Autowired
-    WebDestination destination;
+    @GetMapping("/greeting")
+    String greeting(@RequestParam("name") String name) {
 
-    @Autowired
-    RequestParams params;
+//        params.setGreetingName(name);
+//        applet.run();
+//        return destination.getResult();
 
-    @GetMapping("/hello")
-    String home(@RequestParam("msg") String msg) {
-        params.setMessage(msg);
-        applet.run();
-        return destination.getResult();
+        return greetingHandler.getByName(name);
     }
 
     public static void main(String[] args) {
