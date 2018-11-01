@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,8 +19,10 @@ import org.springframework.web.context.annotation.RequestScope;
 public class SampleController {
 
     @Bean
-    Injector injector() {
-        return Guice.createInjector(new HelloWorldWebModule());
+    Injector injector(ApplicationContext context) {
+        return Guice.createInjector(
+                new HelloWorldWebModule(),
+                new SpringAwareModule(context));
     }
 
     @Bean

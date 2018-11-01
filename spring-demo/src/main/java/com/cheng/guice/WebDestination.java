@@ -3,6 +3,8 @@ package com.cheng.guice;
 import com.cheng.guice.helloworlddemo.MyDestination;
 import com.google.inject.servlet.RequestScoped;
 
+import javax.inject.Inject;
+
 /**
  * @author cheng
  *         2018/11/1 14:08
@@ -11,14 +13,19 @@ import com.google.inject.servlet.RequestScoped;
 @RequestScoped
 public class WebDestination implements MyDestination {
 
-    private StringBuilder sb = new StringBuilder();
+    private final SampleDao dao;
+    private final StringBuilder sb;
 
-    public WebDestination() {
+    @Inject
+    public WebDestination(SampleDao dao) {
         System.out.println("WebDestination constructed.");
+        this.dao = dao;
+        this.sb = new StringBuilder();
     }
 
     @Override
     public void write(String string) {
+        dao.save(string);
         sb.append(string);
     }
 
